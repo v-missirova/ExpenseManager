@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Common/Common.csproj" Id="c9934824-a193-4501-a5d5-c22e5816b598" />
+  <Project Path="ExpenseManager.DBModels/ExpenseManager.DBModels.csproj" />
+  <Project Path="ExpenseManagerUIModels/ExpenseManagerUIModels.csproj" Id="80c8910c-4918-4604-975a-b56af61ef448" />
+</Solution>
