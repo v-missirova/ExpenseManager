@@ -24,7 +24,7 @@ namespace ExpenseManagerConsole
         {
             Console.WriteLine("The best expense manager app!");
             _storageService = new StorageService();
-            string? command = null;
+            string? command;
             while (_appState != AppState.Exit)
             {
                 switch (_appState)
@@ -35,7 +35,6 @@ namespace ExpenseManagerConsole
                         WalletInfo(); break;
 
                 }
-                Console.WriteLine("Enter name of the wallet to view its transactions.");
                 Console.WriteLine("\nEnter \"Exit\" to exit. Enter \"Refresh\" to refresh data.");
                 command = Console.ReadLine()?.ToLower();
                 UpdateState(command);
@@ -66,7 +65,7 @@ namespace ExpenseManagerConsole
                     switch (_appState)
                     {
                         case AppState.Default:
-                            _selectedWallet = _wallets.FirstOrDefault(w => w.Name == command);
+                            _selectedWallet = _wallets?.FirstOrDefault(w => w.Name == command);
                             if (_selectedWallet != null)
                             {
                                 _appState = AppState.ToWallet;
@@ -95,16 +94,17 @@ namespace ExpenseManagerConsole
             LoadWallets();
             foreach (var wallet in _wallets)
             {
-                Console.WriteLine($"{wallet.ToString()}");
+                Console.WriteLine($"{wallet}");
             }
+            Console.WriteLine("Enter name of the wallet to view its transactions.");
             return;  
         }
         private static void WalletInfo() {
             Console.WriteLine($"\n~~~ Transactions for {_selectedWallet.Name} ~~~");
 
-            var transactions = _storageService.GetTransactionsByWalletId(_selectedWallet.Id);
+            var transactions = _storageService?.GetTransactionsByWalletId(_selectedWallet.Id);
 
-            if (transactions.Count == 0)
+            if (transactions?.Count == 0)
             {
                 Console.WriteLine("No transactions found in this wallet.");
             }

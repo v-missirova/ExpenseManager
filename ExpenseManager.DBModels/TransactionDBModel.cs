@@ -8,7 +8,7 @@ namespace ExpenseManager.DBModels {
     {
         public Guid Id { get; }
         public Guid WalletId { get; }
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         public DateTime DataTimeOfTransaction { get;}
         public Category Category { get; set; }
         public decimal Amount { get; set; }

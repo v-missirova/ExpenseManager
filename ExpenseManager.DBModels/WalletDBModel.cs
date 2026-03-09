@@ -11,7 +11,7 @@ namespace ExpenseManager.DBModels
     public class WalletDBModel
     {
         public Guid Id { get; }
-        public string Name { get; set; } 
+        public string Name { get; set; } = string.Empty;
 
         public Currency Currency { get; set; }
 
