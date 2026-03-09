@@ -1,20 +1,32 @@
-﻿using Common.Enums;
+﻿using ExpenseManager.Common.Enums;
+using ExpenseManager.DBModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace ExpenseManagerUIModels
 {
     public class TransactionUIModel
     {
-        // ID is generated once so can't be changed later.
+        // Id is created once, no need for setter
         public Guid Id { get; }
-        // transaction is set to certain wallet so can't be changed later.
         public Guid WalletId { get; }
         public string Description { get; set; }
-        // Date and time is set on creation of transaction so can't be changed later.
-        public DateTime DataTimeOfTransaction { get; }
+        // Data and time is set once, no need for setter
+        public DateTime DateTimeOfTransaction { get; }
         public Category Category { get; set; }
         public decimal Amount { get; set; }
+        public bool IsExpense => Amount < 0;
+
+        public TransactionUIModel(TransactionDBModel dbModel)
+        {
+            Id = dbModel.Id;
+            WalletId = dbModel.WalletId;
+            Category = dbModel.Category;
+            Description = dbModel.Description;
+            Amount = dbModel.Amount;
+            DateTimeOfTransaction = dbModel.DataTimeOfTransaction;
+        }
     }
-    }
+}

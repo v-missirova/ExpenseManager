@@ -1,4 +1,4 @@
-﻿using Common.Enums;
+﻿using ExpenseManager.Common.Enums;
 
 namespace ExpenseManager.DBModels { 
 
@@ -16,7 +16,7 @@ namespace ExpenseManager.DBModels {
 
         private TransactionDBModel() { }
 
-        public TransactionDBModel(string description, Category category, Guid walletId, decimal amount) { 
+        public TransactionDBModel(Guid walletId, decimal amount, Category category, string description) { 
 
             Id = Guid.NewGuid();
             Description = description;

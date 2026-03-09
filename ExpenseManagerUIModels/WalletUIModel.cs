@@ -1,4 +1,4 @@
-﻿using Common.Enums;
+﻿using ExpenseManager.Common.Enums;
 using ExpenseManager.DBModels;
 using System;
 using System.Collections.Generic;
@@ -8,35 +8,26 @@ namespace ExpenseManagerUIModels
 {
     public class WalletUIModel
     {
-        private WalletDBModel _dbModel;
-        private string _name;
-        private Currency _currency;
-        private List<TransactionUIModel> _transactions;
+        private readonly List<TransactionUIModel> _transactions;
+        public Guid Id { get; }
+        public string Name { get; set; }
+        public Currency Currency { get; set; }
 
-        // ID is generated once so can't be changed later.
-        public Guid Id { get => _dbModel.Id; }
-        public string Name { get => _name; set => _name = value; }
-
-        public Currency Currency { get => _currency; set => _currency = value; }
         public IReadOnlyList<TransactionUIModel> Transactions => _transactions;
-        public decimal TransactionSum
-        {
-            get
-            {
-                if (Transactions == null) return 0;
-                decimal sum = 0;
-                foreach (var transaction in Transactions) sum += transaction.Amount;
-                return sum;
-            } set; }
 
-        public WalletUIModel ()
+        public decimal TransactionSum => _transactions.Sum(t => t.Amount);
+
+        public WalletUIModel(WalletDBModel dbModel)
         {
+            Id = dbModel.Id;
+            Name = dbModel.Name;
+            Currency = dbModel.Currency;
             _transactions = new List<TransactionUIModel>();
         }
-        public WalletUIModel (WalletDBModel dbModel) : this() { 
-            _dbModel = dbModel;
-            _name = dbModel.Name;
-            _currency = dbModel.Currency;
+
+        public override string ToString()
+        {
+            return $"Wallet: {Name}, {Currency}"; ;
         }
     }
 }

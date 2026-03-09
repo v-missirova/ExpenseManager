@@ -1,4 +1,4 @@
-﻿using Common.Enums;
+﻿using ExpenseManager.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +21,5 @@ namespace ExpenseManager.DBModels
             Currency = currency;
 
         }
-
     }
 }
