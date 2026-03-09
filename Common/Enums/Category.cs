@@ -10,6 +10,7 @@ namespace ExpenseManager.Common.Enums
         Cafe,
         Transport,
         Investition,
+        Other
 
     }
 

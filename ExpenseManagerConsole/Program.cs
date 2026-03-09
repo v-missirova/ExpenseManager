@@ -16,8 +16,9 @@ namespace ExpenseManagerConsole
         }
 
         private static AppState _appState = AppState.Default;
-        private static StorageService _storageService;
-        private static List<WalletUIModel> _wallets;
+        private static StorageService? _storageService;
+        private static List<WalletUIModel>? _wallets;
+        private static WalletUIModel? _selectedWallet;
 
         static void Main(string[] args)
         {
@@ -32,32 +33,49 @@ namespace ExpenseManagerConsole
                         WalletList(); break;
                     case AppState.ToWallet:
                         WalletInfo(); break;
-                    case AppState.ToTransactions:
-                        ToTransaction(); break;
 
                 }
-                Console.WriteLine("Enter \"Exit\" to exit");
-                command = Console.ReadLine();
+                Console.WriteLine("Enter name of the wallet to view its transactions.");
+                Console.WriteLine("\nEnter \"Exit\" to exit. Enter \"Refresh\" to refresh data.");
+                command = Console.ReadLine()?.ToLower();
                 UpdateState(command);
             }
         }
 
-        private static void UpdateState(string? command)
+        private static void UpdateState(string? command) // global commands handler 
         {
             switch (command)
             {
-                case "Back":
+                case "back":
                     _appState = AppState.Default;
+                    Console.Clear();
                     break;
-                case "Exit":
+
+                case "exit":
                     _appState = AppState.Exit;
-                    Console.WriteLine("Thank you and see you later!");
+                    Console.WriteLine("Thank you and see you later. :)");
+                    break;
+
+                case "refresh":
+                    _wallets = null; // forces data reload on next show
+                    _appState = AppState.Default;
+                    Console.Clear();
+                    Console.WriteLine("Data has been refreshed successfully.");
                     break;
                 default:
                     switch (_appState)
                     {
                         case AppState.Default:
-                            _appState = AppState.ToWallet;
+                            _selectedWallet = _wallets.FirstOrDefault(w => w.Name == command);
+                            if (_selectedWallet != null)
+                            {
+                                _appState = AppState.ToWallet;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Wallet with name '{command}' not found. Press Enter.");
+                                Console.ReadLine();
+                            }
                             break;
                         case AppState.Exit:
                             Console.WriteLine("Unknown command. Please try again.");
@@ -81,7 +99,22 @@ namespace ExpenseManagerConsole
             }
             return;  
         }
-        private static void WalletInfo() { return; }
-        private static void ToTransaction() { return; }
+        private static void WalletInfo() {
+            Console.WriteLine($"\n~~~ Transactions for {_selectedWallet.Name} ~~~");
+
+            var transactions = _storageService.GetTransactionsByWalletId(_selectedWallet.Id);
+
+            if (transactions.Count == 0)
+            {
+                Console.WriteLine("No transactions found in this wallet.");
+            }
+            else
+            {
+                foreach (var transaction in transactions)
+                {
+                    Console.WriteLine(transaction.ToString());
+                }
+            }
+        }
     }
 }

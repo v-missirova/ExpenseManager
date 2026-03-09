@@ -5,9 +5,11 @@ using System.Text;
 
 namespace ExpenseManager.DBModels
 {
+    /// <summary>
+    /// Entity class for storing Wallet data.
+    /// </summary>
     public class WalletDBModel
     {
-       // ID is generated once so can't be changed later.
         public Guid Id { get; }
         public string Name { get; set; } 
 
