@@ -4,4 +4,11 @@
   <Project Path="ExpenseManager.Services/ExpenseManager.Services.csproj" Id="757d292b-08a2-459a-9e6d-8546f0a9e57a" />
   <Project Path="ExpenseManagerConsole/ExpenseManagerConsole.csproj" Id="43c6918d-3481-4519-8a2e-82b702c51bf9" />
   <Project Path="ExpenseManagerUIModels/ExpenseManagerUIModels.csproj" Id="80c8910c-4918-4604-975a-b56af61ef448" />
+  <Project Path="MauiApp1/MauiApp1.csproj" Id="2f704a06-0071-4369-9fb9-3ec2c44943d6">
+    <BuildDependency Project="Common/ExpenseManager.Common.csproj" />
+    <BuildDependency Project="ExpenseManager.DBModels/ExpenseManager.DBModels.csproj" />
+    <BuildDependency Project="ExpenseManager.Services/ExpenseManager.Services.csproj" />
+    <BuildDependency Project="ExpenseManagerUIModels/ExpenseManagerUIModels.csproj" />
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>

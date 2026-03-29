@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ExpenseManagerUIModels;assembly=ExpenseManagerUIModels"
+             x:Class="MauiApp1.MainPage"
+             Title="My wallets 0_0 XD">
+
+    <VerticalStackLayout Padding="20">
+        <Label Text="Wallet list:" 
+               FontSize="22" 
+               FontAttributes="Bold" 
+               Margin="0,0,0,5" />
+
+        <CollectionView x:Name="WalletsCollection" SelectionMode="Single" SelectionChanged="OnWalletSelected">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:WalletUIModel">
+
+                    <Border 
+                        Stroke="LightGray"
+                        StrokeShape="RoundRectangle 35, 35, 35, 35"
+                        Padding="15"
+                        Margin="0,0,0,15">
+                        <VerticalStackLayout Margin="5,0 ,0,5">
+                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="White"/>
+                            <Label Text="{Binding Currency, StringFormat='{0}'}" FontSize="14" TextColor="Gray" />
+                            <Label Text="{Binding TransactionSum, StringFormat='Balance: {0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="LightCoral" Margin="0,5,0,0" />
+                        </VerticalStackLayout>
+                    </Border>
+    </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+
+</ContentPage>

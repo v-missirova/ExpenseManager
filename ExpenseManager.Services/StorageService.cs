@@ -10,7 +10,7 @@ namespace ExpenseManager.Services
     /// Service layer acting as an intermediary between the UI and the data storage.
     /// Maps DB entities to UI ViewModels.
     /// </summary>
-    public class StorageService
+    public class StorageService : IStorageService
     {
         private List<WalletDBModel>? _wallets;
         private List<TransactionDBModel>? _transactions;
