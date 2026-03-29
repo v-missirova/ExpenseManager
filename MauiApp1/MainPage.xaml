@@ -10,7 +10,7 @@
                FontSize="22" 
                FontAttributes="Bold" 
                Margin="0,0,0,5" />
-
+    <!-- list of wallets -->
         <CollectionView x:Name="WalletsCollection" SelectionMode="Single" SelectionChanged="OnWalletSelected">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />

@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using ExpenseManager.Services;
 using ExpenseManagerUIModels;
 
@@ -28,17 +30,11 @@ public partial class TransactionDetailsPage : ContentPage
     private void LoadTransactionData(Guid transactionId)
     {
         var allWallets = _storageService.GetAllWallets();
-        TransactionUIModel targetTransaction = null;
-        foreach (var wallet in allWallets)
-        {
-            var transactions = _storageService.GetTransactionsByWalletId(wallet.Id);
-            targetTransaction = transactions.FirstOrDefault(t => t.Id == transactionId);
 
-            if (targetTransaction != null)
-            {
-                break;
-            }
-        }
+        var targetTransaction = allWallets
+            .SelectMany(w => w.Transactions)
+            .FirstOrDefault(t => t.Id == transactionId);
+
         if (targetTransaction != null)
         {
             this.BindingContext = targetTransaction;

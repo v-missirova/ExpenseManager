@@ -31,10 +31,8 @@ public partial class WalletDetailsPage : ContentPage
 
         if (_currentWallet != null)
         {
-            var transactions = _storageService.GetTransactionsByWalletId(walletId);
-            _currentWallet?.LoadTransactions(transactions);
             this.BindingContext = _currentWallet;
-            TransactionsCollection.ItemsSource = _currentWallet?.Transactions;
+            TransactionsCollection.ItemsSource = _currentWallet.Transactions;
         }
     }
 
