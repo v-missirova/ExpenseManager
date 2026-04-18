@@ -1,8 +1,7 @@
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ExpenseManager.DTO;
+using ExpenseManager.DTOModels;
 using ExpenseManager.Services;
 
 namespace MauiApp1.ViewModels
@@ -14,9 +13,9 @@ namespace MauiApp1.ViewModels
 		public ObservableCollection<WalletListDTO> Wallets { get; } = new();
 
 		[ObservableProperty]
-		private WalletListDTO _selectedWallet;
+        private WalletListDTO _selectedWallet;
 
-		public MainViewModel(IWalletService walletService)
+		public WalletViewModel(IWalletService walletService)
 		{
 			_walletService = walletService;
 		}

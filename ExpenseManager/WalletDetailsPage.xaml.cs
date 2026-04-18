@@ -1,6 +1,6 @@
-using ExpenseManager.ViewModels;
+using MauiApp1.ViewModels;
 
-namespace ExpenseManager.ExpenseManager;
+namespace MauiApp1;
 
 public partial class WalletDetailsPage : ContentPage
 {

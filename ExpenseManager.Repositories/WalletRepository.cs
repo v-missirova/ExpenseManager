@@ -6,14 +6,8 @@ namespace ExpenseManager.Repositories
 {
     public class WalletRepository : IWalletRepository
     {
-        public async Task<List<WalletDBModel>> GetAllWalletsAsync()
-        {
-            return FakeStorage.GetWallets().ToList();
-        }
+        public async Task<List<WalletDBModel>> GetAllWalletsAsync() => FakeStorage.GetWallets().ToList();
 
-        public async Task<WalletDBModel> GetWalletByIdAsync(Guid id)
-        {
-            return FakeStorage.GetWallets().FirstOrDefault(w => w.Id == id);
-        }
+        public async Task<WalletDBModel> GetWalletByIdAsync(Guid id) => FakeStorage.GetWallets().FirstOrDefault(w => w.Id == id);
     }
 }

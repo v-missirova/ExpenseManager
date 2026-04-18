@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace ExpenseManager.Services.DTOModels
+namespace ExpenseManager.DTOModels
 {
     public class WalletDetailsDTO
     {
-        public Guid Id { get; }
-        public string Name { get; }
-        public string Currency { get;}
-        public decimal Balance { get;}
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Currency { get; set; }
+        public decimal Balance { get; set; }
 
         public List<TransactionListDTO> Transactions { get; set; }
     }

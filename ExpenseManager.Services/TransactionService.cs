@@ -24,7 +24,7 @@ namespace ExpenseManager.Services
                 Category = dbTransaction.Category.ToString(),
                 Description = dbTransaction.Description,
                 Amount = dbTransaction.Amount,
-                DataTimeOfTransaction = dbTransaction.DataTimeOfTransaction,
+                DateTimeOfTransaction = dbTransaction.DateTimeOfTransaction,
                 IsExpense = dbTransaction.Amount < 0
             };
         }

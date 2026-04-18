@@ -30,7 +30,7 @@ namespace ExpenseManagerUIModels
             Category = dbModel.Category;
             Description = dbModel.Description;
             Amount = dbModel.Amount;
-            DateTimeOfTransaction = dbModel.DataTimeOfTransaction;
+            DateTimeOfTransaction = dbModel.DateTimeOfTransaction;
         }
         public override string ToString()
         {

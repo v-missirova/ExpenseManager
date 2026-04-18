@@ -1,6 +1,6 @@
 using System;
 
-namespace ExpenseManager.Services.DTOModels
+namespace ExpenseManager.DTOModels
 {
     public class TransactionListDTO
     {

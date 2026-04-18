@@ -1,7 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using ExpenseManager.DTO;
+using ExpenseManager.DTOModels;
 using ExpenseManager.Services;
 
 namespace MauiApp1.ViewModels

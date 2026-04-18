@@ -50,7 +50,7 @@ namespace ExpenseManager.Services
                 Category = t.Category.ToString(),
                 Description = t.Description,
                 Amount = t.Amount,
-                DataTimeOfTransaction = t.DataTimeOfTransaction
+                DataTimeOfTransaction = t.DateTimeOfTransaction
             }).ToList();
 
             return new WalletDetailsDTO

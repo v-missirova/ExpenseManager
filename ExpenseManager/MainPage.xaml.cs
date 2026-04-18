@@ -1,32 +1,23 @@
-﻿using ExpenseManager.Services;
-using ExpenseManagerUIModels;
+﻿using MauiApp1.ViewModels;
 
 namespace MauiApp1;
 
 public partial class MainPage : ContentPage
 {
-    private readonly IStorageService _storageService;
-
-    public MainPage(IStorageService storageService)
+    public MainPage(WalletViewModel viewModel)
     {
         InitializeComponent();
-        _storageService = storageService;
+
+        this.BindingContext = viewModel;
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
 
-        WalletsCollection.ItemsSource = _storageService.GetAllWallets();
-    }
-
-    private async void OnWalletSelected(object sender, SelectionChangedEventArgs e)
-    {
-        if (e.CurrentSelection.FirstOrDefault() is WalletUIModel selectedWallet)
+        if (BindingContext is WalletViewModel vm)
         {
-            WalletsCollection.SelectedItem = null;
-
-            await Shell.Current.GoToAsync($"WalletDetailsPage?WalletId={selectedWallet.Id}");
+            vm.LoadDataCommand.Execute(null);
         }
     }
 }

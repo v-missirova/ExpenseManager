@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:ExpenseManagerUIModels;assembly=ExpenseManagerUIModels"
+             xmlns:dto="clr-namespace:ExpenseManager.DTOModels;assembly=ExpenseManager.DTOModels"
              x:Class="MauiApp1.MainPage"
              Title="My wallets 0_0 XD">
 
@@ -11,12 +11,14 @@
                FontAttributes="Bold" 
                Margin="0,0,0,5" />
     <!-- list of wallets -->
-        <CollectionView x:Name="WalletsCollection" SelectionMode="Single" SelectionChanged="OnWalletSelected">
+        <CollectionView x:Name="WalletsCollection" SelectionMode="Single"
+                        ItemsSource="{Binding Wallets}"
+                        SelectedItem="{Binding SelectedWallet, Mode=TwoWay}">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:WalletUIModel">
+                <DataTemplate x:DataType="dto:WalletListDTO">
 
                     <Border 
                         Stroke="LightGray"
@@ -26,7 +28,7 @@
                         <VerticalStackLayout Margin="5,0 ,0,5">
                             <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="White"/>
                             <Label Text="{Binding Currency, StringFormat='{0}'}" FontSize="14" TextColor="Gray" />
-                            <Label Text="{Binding TransactionSum, StringFormat='Balance: {0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="LightCoral" Margin="0,5,0,0" />
+                            <Label Text="{Binding Balance, StringFormat='Balance: {0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="LightCoral" Margin="0,5,0,0" />
                         </VerticalStackLayout>
                     </Border>
     </DataTemplate>
