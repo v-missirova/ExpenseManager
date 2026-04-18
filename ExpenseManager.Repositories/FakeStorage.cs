@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
 
-namespace ExpenseManager.Services
+namespace ExpenseManager.Repositories
 {
     /// <summary>
     /// Static fake storage. Internal (resctricted) acces ensures that only Services can access it.

@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExpenseManager.DBModels\ExpenseManager.DBModels.csproj" />
+    <ProjectReference Include="..\ExpenseManager.DTOModels\ExpenseManager.DTOModels.csproj" />
+    <ProjectReference Include="..\ExpenseManager.Repositories\ExpenseManager.Repositories.csproj" />
     <ProjectReference Include="..\ExpenseManagerUIModels\ExpenseManagerUIModels.csproj" />
   </ItemGroup>
 

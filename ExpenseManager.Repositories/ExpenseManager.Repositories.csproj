@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\ExpenseManager.Common.csproj" />
+    <ProjectReference Include="..\ExpenseManager.DBModels\ExpenseManager.DBModels.csproj" />
   </ItemGroup>
 
 </Project>
