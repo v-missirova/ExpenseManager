@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:ExpenseManagerUIModels;assembly=ExpenseManagerUIModels"
+             xmlns:models="clr-namespace:ExpenseManager.DTOModels;assembly=ExpenseManager.DTOModels"
              x:Class="MauiApp1.WalletDetailsPage"
              Title="Wallet details :0 >:)">
+
     <ScrollView Margin="20">
         <Grid RowDefinitions="Auto, *">
-<!--upper panel with name, currency, balance -->
             <Border Grid.Row="0"
                     Stroke="LightGray"
                     StrokeShape="RoundRectangle 35, 35, 35, 35"
@@ -14,29 +14,30 @@
                     Margin="0,0,0,20"
                     Background="#dbdbdb">
                 <VerticalStackLayout>
-                <Label Text="{Binding Wallet.Name}" FontSize="22" FontAttributes="Bold" TextColor="#2B0B98"/>
+                    <Label Text="{Binding Wallet.Name}" FontSize="22" FontAttributes="Bold" TextColor="#2B0B98"/>
                     <Label Text="{Binding Wallet.Currency, StringFormat='Currency: {0}'}" FontSize="16" TextColor="#9d9d9d" />
-                <Label Text="{Binding Wallet.Balance, StringFormat='Balance: {0:F2}'}" FontSize="18" FontAttributes="Bold" TextColor="DarkGreen" Margin="0,10,0,0" />
+                    <Label Text="{Binding Wallet.Balance, StringFormat='Balance: {0:F2}'}" FontSize="18" FontAttributes="Bold" TextColor="DarkGreen" Margin="0,10,0,0" />
                 </VerticalStackLayout>
             </Border>
-<!--list of transactions-->
-        <VerticalStackLayout Grid.Row="1" Padding="20,0,20,20">
-            <Label Text="Transactions:" FontSize="18" FontAttributes="Bold" Margin="0,0,0,10" />
 
-            <CollectionView x:Name="TransactionsCollection"
-                ItemsSource="{Binding Transactions}"
-                SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                SelectionMode="Single">
+            <VerticalStackLayout Grid.Row="1" Padding="20,0,20,20">
+                <Label Text="Transactions:" FontSize="18" FontAttributes="Bold" Margin="0,0,0,10" />
+
+                <CollectionView x:Name="TransactionsCollection"
+                                ItemsSource="{Binding Transactions}"
+                                SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                                SelectionMode="Single">
+
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
                     </CollectionView.ItemsLayout>
+
                     <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:TransactionUIModel">
-                            <Border 
-                                Margin="0,0,0,10" 
-                                Padding="15" 
-                                Stroke="#E0E0E0" 
-                                StrokeShape="RoundRectangle 35, 35, 35, 35">
+                        <DataTemplate x:DataType="models:TransactionListDTO">
+                            <Border Margin="0,0,0,10" 
+                                    Padding="15" 
+                                    Stroke="#E0E0E0" 
+                                    StrokeShape="RoundRectangle 35, 35, 35, 35">
                                 <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
                                     <Label Grid.Row="0" Grid.Column="0" Text="{Binding Category}" FontSize="16" FontAttributes="Bold"/>
                                     <Label Grid.Row="1" Grid.Column="0" Text="{Binding Description}" FontSize="14" TextColor="Gray"/>
@@ -46,9 +47,9 @@
                                 </Grid>
                             </Border>
                         </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </Grid>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Grid>
     </ScrollView>
 </ContentPage>

@@ -7,5 +7,4 @@
   <Project Path="ExpenseManager/MauiApp1.csproj">
     <Deploy />
   </Project>
-  <Project Path="ExpenseManagerUIModels/ExpenseManagerUIModels.csproj" Id="80c8910c-4918-4604-975a-b56af61ef448" />
 </Solution>

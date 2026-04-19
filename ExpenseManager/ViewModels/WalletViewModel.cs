@@ -13,7 +13,7 @@ namespace MauiApp1.ViewModels
 		public ObservableCollection<WalletListDTO> Wallets { get; } = new();
 
 		[ObservableProperty]
-        private WalletListDTO _selectedWallet;
+		public partial WalletListDTO? SelectedWallet { get; set; }
 
 		public WalletViewModel(IWalletService walletService)
 		{
@@ -31,7 +31,7 @@ namespace MauiApp1.ViewModels
 			}
 		}
 
-		partial void OnSelectedWalletChanged(WalletListDTO value)
+		partial void OnSelectedWalletChanged(WalletListDTO? value)
 		{
 			if (value != null)
 			{

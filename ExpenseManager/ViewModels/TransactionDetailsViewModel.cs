@@ -11,7 +11,7 @@ namespace MauiApp1.ViewModels
         private readonly ITransactionService _transactionService;
 
         [ObservableProperty]
-        private TransactionDetailsDTO _transaction;
+        public partial TransactionDetailsDTO? Transaction { get; set; }
 
         public string TransactionIdParam
         {
