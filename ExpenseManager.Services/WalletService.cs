@@ -81,6 +81,20 @@ namespace ExpenseManager.Services
             return newWalletId;
         }
 
+        public async Task<WalletListDTO> GetWalletByIdAsync(Guid id)
+        {
+            var wallet = await _walletRepository.GetWalletByIdAsync(id);
+            if (wallet == null) return null;
+
+            return new WalletListDTO
+            {
+                Id = wallet.Id,
+                Name = wallet.Name,
+                Currency = wallet.Currency.ToString(),
+                Balance = wallet.Balance
+            };
+        }
+
         public async Task DeleteWalletAsync(Guid id)
         {
             await _walletRepository.DeleteWalletAsync(id);

@@ -12,6 +12,7 @@ namespace ExpenseManager.Services
 
         Task<Guid> AddWalletAsync(string name, Currency currency, decimal initialBalance);
         Task DeleteWalletAsync(Guid id);
+        Task<WalletListDTO> GetWalletByIdAsync(Guid id);
 
 
     }
