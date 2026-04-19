@@ -7,12 +7,13 @@
              Title="Wallet details :0 >:)">
 
     <Grid>
-        <Grid RowDefinitions="Auto, *" Margin="20">
+        <Grid RowDefinitions="Auto, Auto, Auto, *" Margin="20">
+
             <Border Grid.Row="0"
                     Stroke="LightGray"
                     StrokeShape="RoundRectangle 35, 35, 35, 35"
                     Padding="15"
-                    Margin="0,0,0,20"
+                    Margin="0,0,0,10"
                     Background="#dbdbdb">
                 <VerticalStackLayout>
                     <Label Text="{Binding WalletName}" FontSize="22" FontAttributes="Bold" TextColor="#2B0B98"/>
@@ -21,51 +22,89 @@
                 </VerticalStackLayout>
             </Border>
 
-            <VerticalStackLayout Grid.Row="1" Padding="0,0,0,20">
-                <Label Text="Transactions:" FontSize="18" FontAttributes="Bold" Margin="0,0,0,10" />
+            <Button Grid.Row="1"
+                    Text="Add Transaction"
+                    Command="{Binding ToggleAddFormCommand}"
+                    BackgroundColor="#2B0B98"
+                    TextColor="White"
+                    CornerRadius="20"
+                    Margin="0,0,0,10" />
 
-                <CollectionView x:Name="TransactionsCollection"
-                ItemsSource="{Binding Transactions}"
-                SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                SelectionMode="Single">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
-                    </CollectionView.ItemsLayout>
-
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:TransactionDBModel">
-                            <Border Margin="0,0,0,10" 
-                    Padding="15" 
+            <Border Grid.Row="2" 
+                    IsVisible="{Binding IsAddFormVisible}"
                     Stroke="#E0E0E0" 
                     StrokeShape="RoundRectangle 35, 35, 35, 35"
-                    BackgroundColor="#dbdbdb">
-                                <Grid ColumnDefinitions="*, Auto, Auto" RowDefinitions="Auto, Auto" ColumnSpacing="10">
+                    Padding="20" 
+                    Margin="0,0,0,20" 
+                    Background="#F2F2F2">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="New Transaction" FontSize="18" FontAttributes="Bold" TextColor="#2B0B98" HorizontalOptions="Center"/>
 
-                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding Category}" FontSize="16" FontAttributes="Bold" TextColor="Black"/>
-                                    <Label Grid.Row="1" Grid.Column="0" Text="{Binding Description}" FontSize="14" TextColor="#404040"/>
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                        <Entry Grid.Column="0" 
+                               Placeholder="Sum" 
+                               Text="{Binding NewTransactionAmount}" 
+                               Keyboard="Numeric"
+                               TextColor="Black"
+                               PlaceholderColor="Gray"/>
 
-                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Amount, StringFormat='{0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="Black" HorizontalOptions="End"/>
-                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding DateTimeOfTransaction, StringFormat='{0:dd.MM.yyyy}'}" FontSize="12" TextColor="Gray" HorizontalOptions="End"/>
+                        <Picker Grid.Column="1" 
+                                Title="Category" 
+                                ItemsSource="{Binding Categories}" 
+                                SelectedItem="{Binding NewTransactionCategory}"
+                                TextColor="Black" TitleColor="Gray"/>
+                    </Grid>
 
-                                    <ImageButton Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
-                                 Source="dotnet_bot.png" 
-                                 WidthRequest="25" HeightRequest="25"
-                                 BackgroundColor="Transparent"
-                                 VerticalOptions="Center"
-                                 Command="{Binding Source={x:Reference TransactionsCollection}, Path=BindingContext.DeleteTransactionCommand}"
-                                 CommandParameter="{Binding .}"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
+                    <Entry Placeholder="Description" 
+                           Text="{Binding NewTransactionDescription}" 
+                           TextColor="Black"
+                           PlaceholderColor="Gray"/>
 
-                    <CollectionView.EmptyView>
-                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,50,0,0">
-                            <Label Text="No transactions yet..." TextColor="Gray" HorizontalOptions="Center"/>
-                        </VerticalStackLayout>
-                    </CollectionView.EmptyView>
-                </CollectionView>
-            </VerticalStackLayout>
+                    <Button Text="Save" 
+                            Command="{Binding AddTransactionCommand}" 
+                            BackgroundColor="#2B0B98" 
+                            TextColor="White" 
+                            CornerRadius="20"
+                            Margin="0,10,0,0"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <CollectionView Grid.Row="3" 
+                            x:Name="TransactionsCollection"
+                            ItemsSource="{Binding Transactions}"
+                            SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                            SelectionMode="Single">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TransactionDBModel">
+                        <Border Margin="0,0,0,10" 
+                                Padding="15" 
+                                Stroke="#E0E0E0" 
+                                StrokeShape="RoundRectangle 35, 35, 35, 35"
+                                BackgroundColor="#dbdbdb">
+                            <Grid ColumnDefinitions="*, Auto, Auto" RowDefinitions="Auto, Auto" ColumnSpacing="10">
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Category}" FontSize="16" FontAttributes="Bold" TextColor="Black"/>
+                                <Label Grid.Row="1" Grid.Column="0" Text="{Binding Description}" FontSize="14" TextColor="#404040"/>
+
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Amount, StringFormat='{0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="Black" HorizontalOptions="End"/>
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding DateTimeOfTransaction, StringFormat='{0:dd.MM.yyyy}'}" FontSize="12" TextColor="Gray" HorizontalOptions="End"/>
+
+                                <ImageButton Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
+                                             Source="dotnet_bot.png" 
+                                             WidthRequest="25" HeightRequest="25"
+                                             BackgroundColor="Transparent"
+                                             VerticalOptions="Center"
+                                             Command="{Binding Source={x:Reference TransactionsCollection}, Path=BindingContext.DeleteTransactionCommand}"
+                                             CommandParameter="{Binding .}"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </Grid>
 
         <Grid BackgroundColor="#80000000" IsVisible="{Binding IsBusy}" ZIndex="999">
