@@ -73,6 +73,7 @@
 	  <ProjectReference Include="..\ExpenseManager.DTOModels\ExpenseManager.DTOModels.csproj" />
 	  <ProjectReference Include="..\ExpenseManager.Repositories\ExpenseManager.Repositories.csproj" />
 	  <ProjectReference Include="..\ExpenseManager.Services\ExpenseManager.Services.csproj" />
+	  <ProjectReference Include="..\ExpenseManager.Storage\ExpenseManager.Storage.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

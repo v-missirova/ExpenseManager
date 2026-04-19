@@ -4,6 +4,7 @@
   <Project Path="ExpenseManager.DTOModels/ExpenseManager.DTOModels.csproj" />
   <Project Path="ExpenseManager.Repositories/ExpenseManager.Repositories.csproj" Id="88751440-1dfd-466c-bf5e-e3d80995ddcd" />
   <Project Path="ExpenseManager.Services/ExpenseManager.Services.csproj" Id="757d292b-08a2-459a-9e6d-8546f0a9e57a" />
+  <Project Path="ExpenseManager.Storage/ExpenseManager.Storage.csproj" Id="b9f85223-0c78-48e4-889a-804ac2beca12" />
   <Project Path="ExpenseManager/MauiApp1.csproj">
     <Deploy />
   </Project>

@@ -2,38 +2,121 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:dto="clr-namespace:ExpenseManager.DTOModels;assembly=ExpenseManager.DTOModels"
+             xmlns:viewmodels="clr-namespace:MauiApp1.ViewModels"
              x:Class="MauiApp1.MainPage"
              Title="My wallets 0_0 XD">
 
-    <VerticalStackLayout Padding="20">
-        <Label Text="Wallet list:" 
-               FontSize="22" 
-               FontAttributes="Bold" 
-               Margin="0,0,0,5" />
-    <!-- list of wallets -->
-        <CollectionView x:Name="WalletsCollection" SelectionMode="Single"
-                        ItemsSource="{Binding Wallets}"
-                        SelectedItem="{Binding SelectedWallet, Mode=TwoWay}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="dto:WalletListDTO">
+    <Grid>
 
-                    <Border 
-                        Stroke="LightGray"
-                        StrokeShape="RoundRectangle 35, 35, 35, 35"
-                        Padding="15"
-                        Margin="0,0,0,15">
-                        <VerticalStackLayout Margin="5,0 ,0,5">
-                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="White"/>
-                            <Label Text="{Binding Currency, StringFormat='{0}'}" FontSize="14" TextColor="Gray" />
-                            <Label Text="{Binding Balance, StringFormat='Balance: {0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="LightCoral" Margin="0,5,0,0" />
-                        </VerticalStackLayout>
-                    </Border>
-    </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+        <Grid RowDefinitions="Auto, Auto, Auto, *" Padding="20">
 
+            <Button Grid.Row="0"
+                    Text="+ Add Wallet"
+                    Command="{Binding ToggleAddFormCommand}"
+                    BackgroundColor="#2B0B98"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Margin="0,0,0,10">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsAddFormVisible}" Value="True">
+                        <Setter Property="Text" Value="Close Form" />
+                        <Setter Property="BackgroundColor" Value="Gray" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="Button" Binding="{Binding IsAddFormVisible}" Value="False">
+                        <Setter Property="Text" Value="Add Wallet" />
+                        <Setter Property="BackgroundColor" Value="#440260" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+
+            <Border Grid.Row="1" 
+                    IsVisible="{Binding IsAddFormVisible}"
+                    Stroke="LightGray" 
+                    StrokeShape="RoundRectangle 20" 
+                    Padding="15" 
+                    Margin="0,0,0,20" 
+                    Background="#2B2B2B">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Add new wallet:" FontSize="16" FontAttributes="Bold" TextColor="White"/>
+
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                        <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, *" ColumnSpacing="10" RowSpacing="10">
+
+                            <Entry Grid.Row="0" Grid.Column="0" Placeholder="Name (e.g. Mono)" Text="{Binding NewWalletName}" TextColor="White"/>
+
+                            <Picker Grid.Row="0" Grid.Column="1" 
+                                Title="Select currency" 
+                                ItemsSource="{Binding Currencies}" 
+                                SelectedItem="{Binding NewWalletCurrency}"
+                                TextColor="White" TitleColor="LightGray"/>
+
+                            <Entry Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                               Placeholder="Initial Balance (0.00)" 
+                               Text="{Binding NewWalletBalance}" 
+                               TextColor="White"/>
+                        </Grid>
+                    </Grid>
+
+                    <Button Text="Save" Command="{Binding AddWalletCommand}" BackgroundColor="#2B0B98" TextColor="White" CornerRadius="10"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Grid.Row="2"
+                   Text="Wallet list:" 
+                   FontSize="22" 
+                   FontAttributes="Bold" 
+                   Margin="0,0,0,10" />
+
+            <CollectionView Grid.Row="3" 
+                            x:Name="WalletsCollection" 
+                            SelectionMode="Single"
+                            ItemsSource="{Binding Wallets}"
+                            SelectedItem="{Binding SelectedWallet, Mode=TwoWay}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:WalletListDTO">
+
+                        <Border Stroke="LightGray"
+                                StrokeShape="RoundRectangle 35, 35, 35, 35"
+                                Padding="15"
+                                Margin="0,0,0,15">
+
+                            <Grid ColumnDefinitions="*, Auto">
+                                <VerticalStackLayout Grid.Column="0" Margin="5,0,0,5" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="White"/>
+                                    <Label Text="{Binding Currency, StringFormat='{0}'}" FontSize="14" TextColor="Gray" />
+                                    <Label Text="{Binding Balance, StringFormat='Balance: {0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="LightCoral" Margin="0,5,0,0" />
+                                </VerticalStackLayout>
+
+                                <ImageButton Grid.Column="1" 
+                                             Source="dotnet_bot.png" 
+                                             WidthRequest="35" HeightRequest="35"
+                                             BackgroundColor="Transparent"
+                                             VerticalOptions="Center"
+                                             Command="{Binding Source={x:Reference WalletsCollection}, Path=BindingContext.DeleteWalletCommand}"
+                                             CommandParameter="{Binding}">
+                                </ImageButton>
+                            </Grid>
+                        </Border>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <Grid BackgroundColor="#80000000" 
+              IsVisible="{Binding IsBusy}"
+              ZIndex="999">
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               Color="White"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               WidthRequest="60"
+                               HeightRequest="60" />
+        </Grid>
+
+    </Grid>
 </ContentPage>

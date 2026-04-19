@@ -1,4 +1,5 @@
 ﻿using ExpenseManager.Common.Enums;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,18 +11,15 @@ namespace ExpenseManager.DBModels
     /// </summary>
     public class WalletDBModel
     {
-        public Guid Id { get; }
-        public string Name { get; set; } = string.Empty;
-
+        [PrimaryKey]
+        public Guid Id { get; set; }
+        public string Name { get; set; }
         public Currency Currency { get; set; }
-
-        private WalletDBModel() { }
-        public WalletDBModel(string name, Currency currency)
+        public decimal Balance { get; set; }
+        public WalletDBModel()
         {
             Id = Guid.NewGuid();
-            Name = name;
-            Currency = currency;
-
+            Name = string.Empty;
         }
     }
 }

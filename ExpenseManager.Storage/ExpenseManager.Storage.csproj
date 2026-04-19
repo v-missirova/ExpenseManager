@@ -4,7 +4,6 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\ExpenseManager.Common.csproj" />
     <ProjectReference Include="..\ExpenseManager.DBModels\ExpenseManager.DBModels.csproj" />
-    <ProjectReference Include="..\ExpenseManager.Storage\ExpenseManager.Storage.csproj" />
   </ItemGroup>
 
 </Project>

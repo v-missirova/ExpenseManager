@@ -1,66 +1,64 @@
-using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using ExpenseManager.DTOModels;
+using CommunityToolkit.Mvvm.Input;
 using ExpenseManager.Services;
+using ExpenseManager.DBModels;
 
 namespace MauiApp1.ViewModels
 {
-    [QueryProperty(nameof(WalletIdParam), "WalletId")]
+    [QueryProperty(nameof(WalletIdString), "WalletId")]
     public partial class WalletDetailsViewModel : BaseViewModel
     {
-        private readonly IWalletService _walletService;
+        private readonly ITransactionService _transactionService;
 
-        public string WalletIdParam
+        private Guid _currentWalletId;
+
+        public ObservableCollection<TransactionDBModel> Transactions { get; } = new();
+
+        public string WalletIdString
         {
             set
             {
-                if (Guid.TryParse(Uri.UnescapeDataString(value), out Guid id))
+                if (Guid.TryParse(value, out Guid parsedId))
                 {
-                    LoadWalletDataAsync(id);
+                    _currentWalletId = parsedId;
+                    _ = LoadTransactionsAsync();
                 }
             }
         }
 
-        [ObservableProperty]
-        public partial WalletDetailsDTO? Wallet { get; set; }
-
-        public ObservableCollection<TransactionListDTO> Transactions { get; } = new();
-
-        [ObservableProperty]
-        public partial TransactionListDTO? SelectedTransaction { get; set; }
-
-        public WalletDetailsViewModel(IWalletService walletService)
+        public WalletDetailsViewModel(ITransactionService transactionService)
         {
-            _walletService = walletService;
+            _transactionService = transactionService;
         }
 
-        private async void LoadWalletDataAsync(Guid id)
+        [RelayCommand]
+        public async Task LoadTransactionsAsync()
         {
-            Wallet = await _walletService.GetWalletDetailsAsync(id);
+            if (IsBusy) return;
+            IsBusy = true;
 
-            if (Wallet != null && Wallet.Transactions != null)
+            try
             {
-                Transactions.Clear();
-                foreach (var tx in Wallet.Transactions)
+                var transactions = await _transactionService.GetTransactionsByWalletIdAsync(_currentWalletId);
+
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    Transactions.Add(tx);
-                }
+                    Transactions.Clear();
+                    foreach (var t in transactions)
+                    {
+                        Transactions.Add(t);
+                    }
+                });
             }
-        }
-
-        partial void OnSelectedTransactionChanged(TransactionListDTO? value)
-        {
-            if (value != null)
+            catch (Exception ex)
             {
-                GoToTransactionDetailsAsync(value);
-                SelectedTransaction = null;
+                await Shell.Current.DisplayAlertAsync("Error", ex.Message, "OK");
             }
-        }
-
-        private async void GoToTransactionDetailsAsync(TransactionListDTO tx)
-        {
-            await Shell.Current.GoToAsync($"TransactionDetailsPage?TransactionId={tx.Id}");
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }

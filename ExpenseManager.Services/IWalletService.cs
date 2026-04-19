@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ExpenseManager.Common.Enums;
 using ExpenseManager.DTOModels;
 
 namespace ExpenseManager.Services
@@ -8,5 +9,10 @@ namespace ExpenseManager.Services
     {
         Task<List<WalletListDTO>> GetAllWalletsAsync();
         Task<DTOModels.WalletDetailsDTO> GetWalletDetailsAsync(Guid walletId);
+
+        Task<Guid> AddWalletAsync(string name, Currency currency, decimal initialBalance);
+        Task DeleteWalletAsync(Guid id);
+
+
     }
 }

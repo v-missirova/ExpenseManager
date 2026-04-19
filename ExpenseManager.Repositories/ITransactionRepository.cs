@@ -8,5 +8,7 @@ namespace ExpenseManager.Repositories
     {
         Task<List<TransactionDBModel>> GetTransactionsByWalletIdAsync(Guid walletId);
         Task<TransactionDBModel> GetTransactionByIdAsync(Guid id);
+        Task SaveTransactionAsync(TransactionDBModel transaction);
+        Task DeleteTransactionAsync(Guid id);
     }
 }

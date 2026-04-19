@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using ExpenseManager.Repositories;
+﻿using ExpenseManager.Repositories;
 using ExpenseManager.Services;
+using ExpenseManager.Storage;
 using MauiApp1.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace MauiApp1;
 
@@ -17,7 +18,8 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
-
+        // registration of Storage (use in-memory sample data for now)
+        builder.Services.AddSingleton<IStorageContext, InMemoryStorageContext>();
         // registration of Repositories
         builder.Services.AddSingleton<IWalletRepository, WalletRepository>();
         builder.Services.AddSingleton<ITransactionRepository, TransactionRepository>();
@@ -27,7 +29,7 @@ public static class MauiProgram
         builder.Services.AddTransient<ITransactionService, TransactionService>();
 
         // registration of ViewModels
-        builder.Services.AddTransient <WalletViewModel>();
+        builder.Services.AddTransient<WalletViewModel>();
         builder.Services.AddTransient<WalletDetailsViewModel>();
         builder.Services.AddTransient<TransactionDetailsViewModel>();
 

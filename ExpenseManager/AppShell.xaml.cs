@@ -5,8 +5,8 @@
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute("WalletDetailsPage", typeof(WalletDetailsPage));
-            Routing.RegisterRoute("TransactionDetailsPage", typeof(TransactionDetailsPage));
+            Routing.RegisterRoute(nameof(WalletDetailsPage), typeof(WalletDetailsPage));
+            Routing.RegisterRoute(nameof(TransactionDetailsPage), typeof(TransactionDetailsPage));
         }
     }
 }

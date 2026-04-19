@@ -8,5 +8,7 @@ namespace ExpenseManager.Repositories
     {
         Task<List<WalletDBModel>> GetAllWalletsAsync();
         Task<WalletDBModel> GetWalletByIdAsync(Guid id);
+        Task SaveWalletAsync(WalletDBModel wallet);
+        Task DeleteWalletAsync(Guid id);
     }
 }

@@ -1,7 +1,9 @@
+using ExpenseManager.Common.Enums;
+using ExpenseManager.DBModels;
+using ExpenseManager.DTOModels;
+using ExpenseManager.Repositories;
 using System;
 using System.Collections.Generic;
-using ExpenseManager.Repositories;
-using ExpenseManager.DTOModels;
 
 namespace ExpenseManager.Services
 {
@@ -61,6 +63,27 @@ namespace ExpenseManager.Services
                 Balance = dbTransactions.Sum(t => t.Amount),
                 Transactions = transactionDTOs
             };
+        }
+        public async Task<Guid> AddWalletAsync(string name, Currency currency, decimal initialBalance)
+        {
+            var newWalletId = Guid.NewGuid();
+
+            var newDbWallet = new WalletDBModel
+            {
+                Id = newWalletId,
+                Name = name,
+                Currency = currency,
+                Balance = initialBalance
+            };
+
+            await _walletRepository.SaveWalletAsync(newDbWallet);
+
+            return newWalletId;
+        }
+
+        public async Task DeleteWalletAsync(Guid id)
+        {
+            await _walletRepository.DeleteWalletAsync(id);
         }
     }
 }

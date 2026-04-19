@@ -1,5 +1,5 @@
 ﻿using ExpenseManager.Common.Enums;
-
+using SQLite;
 namespace ExpenseManager.DBModels
 {
     /// <summary>
@@ -7,25 +7,15 @@ namespace ExpenseManager.DBModels
     /// </summary>
     public class TransactionDBModel
     {
-        public Guid Id { get; }
-        public Guid WalletId { get; }
-        public string Description { get; set; } = string.Empty;
-        public DateTime DateTimeOfTransaction { get;}
+        [PrimaryKey]
+        public Guid Id { get; set; }
+
+        [Indexed]
+        public Guid WalletId { get; set; }
         public Category Category { get; set; }
+        public string Description { get; set; }
         public decimal Amount { get; set; }
+        public DateTime DateTimeOfTransaction { get; set; }
 
-        private TransactionDBModel() { }
-
-        public TransactionDBModel(Guid walletId, decimal amount, Category category, string description) { 
-
-            Id = Guid.NewGuid();
-            Description = description;
-            Category = category;
-            DateTimeOfTransaction = DateTime.Now;   // automatically set timestamp on creation
-            WalletId = walletId;             // link to the parent Wallet
-            Amount = amount;
-
-        }
-        
     }
 }
