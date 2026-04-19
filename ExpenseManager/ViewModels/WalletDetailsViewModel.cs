@@ -15,6 +15,8 @@ namespace MauiApp1.ViewModels
 
         private Guid _currentWalletId;
 
+        private string _currentSort = "Date (Newest)";
+
         public ObservableCollection<TransactionDBModel> Transactions { get; } = new();
 
         [ObservableProperty]
@@ -25,8 +27,10 @@ namespace MauiApp1.ViewModels
 
         [ObservableProperty]
         public partial string WalletCurrency { get; set; }
+
         [ObservableProperty]
         public partial TransactionDBModel? SelectedTransaction { get; set; }
+
         [ObservableProperty]
         public partial bool IsAddFormVisible { get; set; }
 
@@ -37,7 +41,7 @@ namespace MauiApp1.ViewModels
         public partial string NewTransactionDescription { get; set; }
 
         [ObservableProperty]
-        public partial Category NewTransactionCategory { get; set; }
+        public partial Category? NewTransactionCategory { get; set; }
 
         public List<Category> Categories { get; } = Enum.GetValues(typeof(Category)).Cast<Category>().ToList();
 
@@ -45,11 +49,64 @@ namespace MauiApp1.ViewModels
         private void ToggleAddForm() => IsAddFormVisible = !IsAddFormVisible;
 
         [RelayCommand]
+        private async Task ShowSortOptionsAsync()
+        {
+            string action = await Shell.Current.DisplayActionSheet("Sort Transactions", "Cancel", null,
+                "Date (Newest)", "Date (Oldest)", "Amount (Highest)", "Amount (Lowest)");
+
+            if (!string.IsNullOrEmpty(action) && action != "Cancel")
+            {
+                _currentSort = action;
+                ApplySort();
+            }
+        }
+
+        private void ApplySort(IEnumerable<TransactionDBModel> sourceList = null)
+        {
+            var listToSort = sourceList?.ToList() ?? Transactions.ToList();
+            if (!listToSort.Any()) return;
+
+            List<TransactionDBModel> sortedList;
+
+            switch (_currentSort)
+            {
+                case "Date (Oldest)":
+                    sortedList = listToSort.OrderBy(t => t.DateTimeOfTransaction).ToList();
+                    break;
+                case "Amount (Highest)":
+                    sortedList = listToSort.OrderByDescending(t => Math.Abs(t.Amount)).ToList();
+                    break;
+                case "Amount (Lowest)":
+                    sortedList = listToSort.OrderBy(t => Math.Abs(t.Amount)).ToList();
+                    break;
+                case "Date (Newest)":
+                default:
+                    sortedList = listToSort.OrderByDescending(t => t.DateTimeOfTransaction).ToList();
+                    break;
+            }
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Transactions.Clear();
+                foreach (var t in sortedList)
+                {
+                    Transactions.Add(t);
+                }
+            });
+        }
+
+        [RelayCommand]
         private async Task AddTransactionAsync()
         {
             if (NewTransactionAmount == 0)
             {
-                await Shell.Current.DisplayAlertAsync("Error", "Enter sum (expenses should be negative)", "ok..");
+                await Shell.Current.DisplayAlertAsync("eror", "enter sum!! >:( expenses should be with '-'", "ok");
+                return;
+            }
+
+            if (NewTransactionCategory == null)
+            {
+                await Shell.Current.DisplayAlertAsync("error!!!", "choose category!!!!!", "ladno...");
                 return;
             }
 
@@ -58,16 +115,15 @@ namespace MauiApp1.ViewModels
             try
             {
                 var amountToSave = NewTransactionAmount;
-                var categoryToSave = NewTransactionCategory;
+                var categoryToSave = NewTransactionCategory.Value;
                 var descToSave = NewTransactionDescription;
                 var dateToSave = DateTime.Now;
 
-                await _transactionService.AddTransactionAsync(_currentWalletId, amountToSave, 
-                    categoryToSave, descToSave);
+                await _transactionService.AddTransactionAsync(_currentWalletId, amountToSave, categoryToSave, descToSave);
 
                 WalletBalance += amountToSave;
 
-                Transactions.Insert(0, new TransactionDBModel
+                var newTx = new TransactionDBModel
                 {
                     Id = Guid.NewGuid(),
                     WalletId = _currentWalletId,
@@ -75,27 +131,33 @@ namespace MauiApp1.ViewModels
                     Category = categoryToSave,
                     Description = descToSave,
                     DateTimeOfTransaction = dateToSave
-                });
+                };
+
+                var currentList = Transactions.ToList();
+                currentList.Add(newTx);
+
+                ApplySort(currentList);
 
                 NewTransactionAmount = 0;
                 NewTransactionDescription = string.Empty;
+                NewTransactionCategory = null;
                 IsAddFormVisible = false;
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlertAsync("Помилка бази даних", ex.Message, "OK");
+                await Shell.Current.DisplayAlertAsync("error", $"can't add: {ex.Message}", "OK");
             }
             finally
             {
                 IsBusy = false;
             }
         }
+
         partial void OnSelectedTransactionChanged(TransactionDBModel? value)
         {
             if (value != null)
             {
                 Shell.Current.GoToAsync($"TransactionDetailsPage?TransactionId={value.Id}");
-
                 SelectedTransaction = null;
             }
         }
@@ -136,18 +198,40 @@ namespace MauiApp1.ViewModels
 
                 var transactions = await _transactionService.GetTransactionsByWalletIdAsync(_currentWalletId);
 
+                ApplySort(transactions);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlertAsync("error", ex.Message, "okk");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task DeleteTransactionAsync(TransactionDBModel transaction)
+        {
+            if (transaction == null) return;
+            bool confirm = await Shell.Current.DisplayAlertAsync("confirmation", "are you sure you want delete this transactin?", "yes", "no");
+            if (!confirm) return;
+
+            IsBusy = true;
+
+            try
+            {
+                await _transactionService.DeleteTransactionAsync(transaction.Id, _currentWalletId);
+
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    Transactions.Clear();
-                    foreach (var t in transactions)
-                    {
-                        Transactions.Add(t);
-                    }
+                    WalletBalance -= transaction.Amount;
+                    Transactions.Remove(transaction);
                 });
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlertAsync("Error", ex.Message, "OK");
+                await Shell.Current.DisplayAlertAsync("error", $"can't delete: {ex.Message}", "ladno");
             }
             finally
             {

@@ -12,7 +12,12 @@ namespace ExpenseManager.Repositories
         {
             _storage = storage;
         }
+        public async Task UpdateWalletAsync(WalletDBModel wallet)
+        {
+            await _storage.DeleteWalletAsync(wallet.Id);
 
+            await _storage.SaveWalletAsync(wallet);
+        }
         public async Task<List<WalletDBModel>> GetAllWalletsAsync()
         {
             var wallets = new List<WalletDBModel>();

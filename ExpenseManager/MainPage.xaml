@@ -91,7 +91,7 @@
                                 </VerticalStackLayout>
 
                                 <ImageButton Grid.Column="1" 
-                                             Source="dotnet_bot.png" 
+                                             Source="close.png"
                                              WidthRequest="35" HeightRequest="35"
                                              BackgroundColor="Transparent"
                                              VerticalOptions="Center"

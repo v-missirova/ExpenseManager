@@ -56,7 +56,7 @@ namespace ExpenseManager.Services
             if (wallet != null)
             {
                 wallet.Balance += amount;
-                await _walletRepository.SaveWalletAsync(wallet);
+                await _walletRepository.UpdateWalletAsync(wallet);
             }
         }
 
@@ -69,7 +69,7 @@ namespace ExpenseManager.Services
                 if (wallet != null)
                 {
                     wallet.Balance -= transaction.Amount;
-                    await _walletRepository.SaveWalletAsync(wallet);
+                    await _walletRepository.UpdateWalletAsync(wallet);
                 }
                 await _transactionRepository.DeleteTransactionAsync(transactionId);
             }

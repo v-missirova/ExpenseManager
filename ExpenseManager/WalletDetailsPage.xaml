@@ -13,7 +13,7 @@
                     Stroke="LightGray"
                     StrokeShape="RoundRectangle 35, 35, 35, 35"
                     Padding="15"
-                    Margin="0,0,0,10"
+                    Margin="0,0,0,25"
                     Background="#dbdbdb">
                 <VerticalStackLayout>
                     <Label Text="{Binding WalletName}" FontSize="22" FontAttributes="Bold" TextColor="#2B0B98"/>
@@ -22,50 +22,95 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Button Grid.Row="1"
-                    Text="Add Transaction"
-                    Command="{Binding ToggleAddFormCommand}"
-                    BackgroundColor="#2B0B98"
-                    TextColor="White"
-                    CornerRadius="20"
-                    Margin="0,0,0,10" />
+            <Grid Grid.Row="1" ColumnDefinitions="*, Auto, Auto" ColumnSpacing="10" Margin="0,0,0,15">
+
+                <Label Grid.Column="0" 
+                       Text="Transactions" 
+                       TextTransform="Uppercase"
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       VerticalOptions="Center" 
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                       CharacterSpacing="1.5" />
+
+                <Button Grid.Column="1"
+                        Text="⇅ Sort"
+                        Command="{Binding ShowSortOptionsCommand}"
+                        BackgroundColor="#E0E0E0"
+                        TextColor="Black"
+                        CornerRadius="15"
+                        HeightRequest="35"
+                        Padding="15,0" />
+
+                <Button Grid.Column="2"
+                        Text="+ Add"
+                        Command="{Binding ToggleAddFormCommand}"
+                        BackgroundColor="#2B0B98"
+                        TextColor="White"
+                        CornerRadius="15"
+                        HeightRequest="35"
+                        Padding="15,0">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsAddFormVisible}" Value="True">
+                            <Setter Property="Text" Value="Close" />
+                            <Setter Property="BackgroundColor" Value="Gray" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
 
             <Border Grid.Row="2" 
                     IsVisible="{Binding IsAddFormVisible}"
                     Stroke="#E0E0E0" 
-                    StrokeShape="RoundRectangle 35, 35, 35, 35"
+                    StrokeShape="RoundRectangle 35"
                     Padding="20" 
                     Margin="0,0,0,20" 
                     Background="#F2F2F2">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="New Transaction" FontSize="18" FontAttributes="Bold" TextColor="#2B0B98" HorizontalOptions="Center"/>
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="New Transaction" FontSize="18" FontAttributes="Bold" TextColor="#2B0B98" HorizontalOptions="Center" Margin="0,0,0,5"/>
 
-                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
-                        <Entry Grid.Column="0" 
-                               Placeholder="Sum" 
-                               Text="{Binding NewTransactionAmount}" 
-                               Keyboard="Numeric"
-                               TextColor="Black"
-                               PlaceholderColor="Gray"/>
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Amount" FontSize="12" FontAttributes="Bold" TextColor="Gray" Margin="5,0,0,0"/>
+                        <Border Stroke="Transparent" StrokeShape="RoundRectangle 15" BackgroundColor="#E0E0E0" Padding="15,0">
+                            <Entry Placeholder="0.00" 
+                                   Text="{Binding NewTransactionAmount}" 
+                                   Keyboard="Numeric"
+                                   TextColor="Black"
+                                   BackgroundColor="Transparent"
+                                   HeightRequest="45"/>
+                        </Border>
+                    </VerticalStackLayout>
 
-                        <Picker Grid.Column="1" 
-                                Title="Category" 
-                                ItemsSource="{Binding Categories}" 
-                                SelectedItem="{Binding NewTransactionCategory}"
-                                TextColor="Black" TitleColor="Gray"/>
-                    </Grid>
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Category" FontSize="12" FontAttributes="Bold" TextColor="Gray" Margin="5,0,0,0"/>
+                        <Border Stroke="Transparent" StrokeShape="RoundRectangle 15" BackgroundColor="#E0E0E0" Padding="15,0">
+                            <Picker ItemsSource="{Binding Categories}" 
+                                    SelectedItem="{Binding NewTransactionCategory}"
+                                    TextColor="Black"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="45"
+                                    VerticalOptions="Center"/>
+                        </Border>
+                    </VerticalStackLayout>
 
-                    <Entry Placeholder="Description" 
-                           Text="{Binding NewTransactionDescription}" 
-                           TextColor="Black"
-                           PlaceholderColor="Gray"/>
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Description" FontSize="12" FontAttributes="Bold" TextColor="Gray" Margin="5,0,0,0"/>
+                        <Border Stroke="Transparent" StrokeShape="RoundRectangle 15" BackgroundColor="#E0E0E0" Padding="15,0">
+                            <Entry Placeholder="e.g. Grocery store" 
+                                   Text="{Binding NewTransactionDescription}" 
+                                   TextColor="Black"
+                                   BackgroundColor="Transparent"
+                                   HeightRequest="45"/>
+                        </Border>
+                    </VerticalStackLayout>
 
                     <Button Text="Save" 
                             Command="{Binding AddTransactionCommand}" 
                             BackgroundColor="#2B0B98" 
                             TextColor="White" 
                             CornerRadius="20"
-                            Margin="0,10,0,0"/>
+                            Margin="0,10,0,0"
+                            HeightRequest="50"/>
                 </VerticalStackLayout>
             </Border>
 
@@ -94,7 +139,7 @@
                                 <Label Grid.Row="1" Grid.Column="1" Text="{Binding DateTimeOfTransaction, StringFormat='{0:dd.MM.yyyy}'}" FontSize="12" TextColor="Gray" HorizontalOptions="End"/>
 
                                 <ImageButton Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
-                                             Source="dotnet_bot.png" 
+                                             Source="close.png" 
                                              WidthRequest="25" HeightRequest="25"
                                              BackgroundColor="Transparent"
                                              VerticalOptions="Center"
